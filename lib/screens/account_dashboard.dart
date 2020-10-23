@@ -5,7 +5,7 @@ import 'package:thriftService/model/account_model.dart';
 
 import 'package:thriftService/service/firebase_database_util.dart';
 
-import 'add_user_dialog.dart';
+import 'add_account_dialog.dart';
 
 class AccountDashboard extends StatefulWidget {
   @override

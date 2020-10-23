@@ -66,8 +66,10 @@ class FirebaseDatabaseUtil {
     if (transactionResult.committed) {
       _accountRef.push().set(<String, String>{
         "acctName": "" + account.acctName,
-        "acctNumber": "" + account.acctNumber.toString(),
-        "acctDeopsit": "" + account.acctDeposit.toString(),
+        "acctNumber": "" + account.acctNumber,
+        "acctDeposit": "" + account.acctDeposit,
+        "acctWithrawal": "" + account.acctWithrawal,
+        "acctBalance": "" + account.acctBalance,
         "mobile": "" + account.mobile,
       }).then((_) {
         print('Transaction  committed.');
@@ -89,8 +91,10 @@ class FirebaseDatabaseUtil {
   void updateAccount(Account account) async {
     await _accountRef.child(account.id).update({
       "acctName": "" + account.acctName,
-      "acctNumber": "" + account.acctNumber.toString(),
-      "acctDeposit": "" + account.acctDeposit.toString(),
+      "acctNumber": "" + account.acctNumber,
+      "acctDeposit": "" + account.acctDeposit,
+      "acctWithrawal": "" + account.acctWithrawal,
+      "acctBalance": "" + account.acctBalance,
       "mobile": "" + account.mobile,
     }).then((_) {
       print('Transaction  committed.');

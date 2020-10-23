@@ -28,7 +28,7 @@ class AddUserDialog {
     }
 
     return new AlertDialog(
-      title: new Text(isEdit ? 'Edit detail!' : 'Add new user!'),
+      title: new Text(isEdit ? 'Edit detail!' : 'Add new Account!'),
       content: new SingleChildScrollView(
         child: new Column(
           mainAxisSize: MainAxisSize.min,
@@ -37,8 +37,8 @@ class AddUserDialog {
             getTextField("acctName", acctNameController),
             getTextField("acctNumber", acctNumberController),
             getTextField("acctBalance", acctBalanceController),
-            getTextField("acctBalance", acctBalanceController),
-            getTextField("acctBalance", acctBalanceController),
+            getTextField("acctDeposit", acctDepositController),
+            getTextField("acctWithrawal", acctWithrawalController),
             getTextField("Mobile", acctMobileController),
             new GestureDetector(
               onTap: () => onTap(isEdit, _myHomePageState, context),

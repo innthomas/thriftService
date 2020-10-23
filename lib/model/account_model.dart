@@ -3,10 +3,10 @@ import 'package:firebase_database/firebase_database.dart';
 class Account {
   String _id;
   String _acctName;
-  num _acctNumber;
-  double _acctDeposit;
-  double _acctWithrawal;
-  double _acctBalance;
+  String _acctNumber;
+  String _acctDeposit;
+  String _acctWithrawal;
+  String _acctBalance;
   String _mobile;
   Account(
     this._acctName,
@@ -17,13 +17,13 @@ class Account {
     this._acctBalance,
     this._mobile,
   );
-  double get acctBalance => _acctBalance;
+  String get acctBalance => _acctBalance;
   String get id => _id;
   String get acctName => _acctName;
-  num get acctNumber => _acctNumber;
+  String get acctNumber => _acctNumber;
   String get mobile => _mobile;
-  double get acctDeposit => _acctDeposit;
-  double get acctWithrawal => _acctWithrawal;
+  String get acctDeposit => _acctDeposit;
+  String get acctWithrawal => _acctWithrawal;
 
   Account.fromSnapshot(DataSnapshot snapshot) {
     _id = snapshot.key;
