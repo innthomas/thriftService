@@ -1,11 +1,11 @@
 import 'dart:async';
-//import 'package:firebase_database/firebase_database.dart';
 
-//import 'package:myDataTable_app/model/user.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:thriftService/model/account_model.dart';
 
 class FirebaseDatabaseUtil {
   DatabaseReference _counterRef;
-  DatabaseReference _userRef;
+  DatabaseReference _accountRef;
   StreamSubscription<Event> _counterSubscription;
   StreamSubscription<Event> _messagesSubscription;
   FirebaseDatabase database = new FirebaseDatabase();
@@ -26,7 +26,8 @@ class FirebaseDatabaseUtil {
     _counterRef = FirebaseDatabase.instance.reference().child('counter');
     // Demonstrates configuring the database directly
 
-    _userRef = database.reference().child('user');
+    //TODO changed from 'user' to "Account"
+    _accountRef = database.reference().child('account');
     database.reference().child('counter').once().then((DataSnapshot snapshot) {
       print('Connected to second database and read ${snapshot.value}');
     });
@@ -50,11 +51,11 @@ class FirebaseDatabaseUtil {
     return _counter;
   }
 
-  DatabaseReference getUser() {
-    return _userRef;
+  DatabaseReference getAccount() {
+    return _accountRef;
   }
 
-  addUser(User user) async {
+  addAccount(Account account) async {
     final TransactionResult transactionResult =
         await _counterRef.runTransaction((MutableData mutableData) async {
       mutableData.value = (mutableData.value ?? 0) + 1;
@@ -63,11 +64,11 @@ class FirebaseDatabaseUtil {
     });
 
     if (transactionResult.committed) {
-      _userRef.push().set(<String, String>{
-        "name": "" + user.name,
-        "age": "" + user.age,
-        "email": "" + user.email,
-        "mobile": "" + user.mobile,
+      _accountRef.push().set(<String, String>{
+        "acctName": "" + account.acctName,
+        "acctNumber": "" + account.acctNumber.toString(),
+        "acctDeopsit": "" + account.acctDeposit.toString(),
+        "mobile": "" + account.mobile,
       }).then((_) {
         print('Transaction  committed.');
       });
@@ -79,18 +80,18 @@ class FirebaseDatabaseUtil {
     }
   }
 
-  void deleteUser(User user) async {
-    await _userRef.child(user.id).remove().then((_) {
+  void deleteAccount(Account account) async {
+    await _accountRef.child(account.id).remove().then((_) {
       print('Transaction  committed.');
     });
   }
 
-  void updateUser(User user) async {
-    await _userRef.child(user.id).update({
-      "name": "" + user.name,
-      "age": "" + user.age,
-      "email": "" + user.email,
-      "mobile": "" + user.mobile,
+  void updateAccount(Account account) async {
+    await _accountRef.child(account.id).update({
+      "acctName": "" + account.acctName,
+      "acctNumber": "" + account.acctNumber.toString(),
+      "acctDeposit": "" + account.acctDeposit.toString(),
+      "mobile": "" + account.mobile,
     }).then((_) {
       print('Transaction  committed.');
     });

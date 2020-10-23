@@ -17,7 +17,7 @@ class Account {
     this._acctBalance,
     this._mobile,
   );
-  double get getAcctBalance => _acctBalance;
+  double get acctBalance => _acctBalance;
   String get id => _id;
   String get acctName => _acctName;
   num get acctNumber => _acctNumber;

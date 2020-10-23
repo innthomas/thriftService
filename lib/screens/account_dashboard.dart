@@ -1,18 +1,19 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:thriftService/model/account_model.dart';
 
-import 'package:myDataTable_app/model/user.dart';
-import 'package:myDataTable_app/service/firebase_database_util.dart';
+import 'package:thriftService/service/firebase_database_util.dart';
 
 import 'add_user_dialog.dart';
 
-class UserDashboard extends StatefulWidget {
+class AccountDashboard extends StatefulWidget {
   @override
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-class _MyHomePageState extends State<UserDashboard> implements AddUserCallback {
+class _MyHomePageState extends State<AccountDashboard>
+    implements AddAccountCallback {
   bool _anchorToBottom = false;
 
   // instance of util class
@@ -44,7 +45,7 @@ class _MyHomePageState extends State<UserDashboard> implements AddUserCallback {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               new Text(
-                'Firebase Database',
+                'ThriftService',
                 style: new TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -78,7 +79,7 @@ class _MyHomePageState extends State<UserDashboard> implements AddUserCallback {
       // Firebase predefile list widget. It will get user info from firebase database
       body: new FirebaseAnimatedList(
         key: new ValueKey<bool>(_anchorToBottom),
-        query: databaseUtil.getUser(),
+        query: databaseUtil.getAccount(),
         reverse: _anchorToBottom,
         sort: _anchorToBottom
             ? (DataSnapshot a, DataSnapshot b) => b.key.compareTo(a.key)
@@ -87,7 +88,7 @@ class _MyHomePageState extends State<UserDashboard> implements AddUserCallback {
             Animation<double> animation, int index) {
           return new SizeTransition(
             sizeFactor: animation,
-            child: showUser(snapshot),
+            child: showAccount(snapshot),
           );
         },
       ),
@@ -95,23 +96,23 @@ class _MyHomePageState extends State<UserDashboard> implements AddUserCallback {
   }
 
   @override // Call util method for add user information
-  void addUser(User user) {
+  void addAccount(Account account) {
     setState(() {
-      databaseUtil.addUser(user);
+      databaseUtil.addAccount(account);
     });
   }
 
   @override // call util method for update old data.
-  void update(User user) {
+  void update(Account account) {
     setState(() {
-      databaseUtil.updateUser(user);
+      databaseUtil.updateAccount(account);
     });
   }
 
   //It will display a item in the list of users.
 
-  Widget showUser(DataSnapshot res) {
-    User user = User.fromSnapshot(res);
+  Widget showAccount(DataSnapshot res) {
+    Account account = Account.fromSnapshot(res);
 
     var item = new Card(
       child: new Container(
@@ -120,7 +121,7 @@ class _MyHomePageState extends State<UserDashboard> implements AddUserCallback {
               children: <Widget>[
                 new CircleAvatar(
                   radius: 30.0,
-                  child: new Text(getShortName(user)),
+                  child: new Text(getShortName(account)),
                   backgroundColor: const Color(0xFF20283e),
                 ),
                 new Expanded(
@@ -130,19 +131,19 @@ class _MyHomePageState extends State<UserDashboard> implements AddUserCallback {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         new Text(
-                          user.name,
+                          account.acctName,
                           // set some style to text
                           style: new TextStyle(
                               fontSize: 20.0, color: Colors.lightBlueAccent),
                         ),
                         new Text(
-                          user.email,
+                          account.acctNumber.toString(),
                           // set some style to text
                           style: new TextStyle(
                               fontSize: 20.0, color: Colors.lightBlueAccent),
                         ),
                         new Text(
-                          user.mobile,
+                          account.mobile,
                           // set some style to text
                           style: new TextStyle(
                               fontSize: 20.0, color: Colors.amber),
@@ -159,12 +160,12 @@ class _MyHomePageState extends State<UserDashboard> implements AddUserCallback {
                         Icons.edit,
                         color: const Color(0xFF167F67),
                       ),
-                      onPressed: () => showEditWidget(user, true),
+                      onPressed: () => showEditWidget(account, true),
                     ),
                     new IconButton(
                       icon: const Icon(Icons.delete_forever,
                           color: const Color(0xFF167F67)),
-                      onPressed: () => deleteUser(user),
+                      onPressed: () => deleteAccount(account),
                     ),
                   ],
                 ),
@@ -178,27 +179,27 @@ class _MyHomePageState extends State<UserDashboard> implements AddUserCallback {
   }
 
   //Get first letter from the name of user
-  String getShortName(User user) {
+  String getShortName(Account account) {
     String shortName = "";
-    if (!user.name.isEmpty) {
-      shortName = user.name.substring(0, 1);
+    if (account.acctName.isNotEmpty) {
+      shortName = account.acctName.substring(0, 1);
     }
     return shortName;
   }
 
   //Display popup in user info update mode.
-  showEditWidget(User user, bool isEdit) {
+  showEditWidget(Account account, bool isEdit) {
     showDialog(
       context: context,
       builder: (BuildContext context) =>
-          new AddUserDialog().buildAboutDialog(context, this, isEdit, user),
+          new AddUserDialog().buildAboutDialog(context, this, isEdit, account),
     );
   }
 
   //Delete a entry from the Firebase console.
-  deleteUser(User user) {
+  deleteAccount(Account account) {
     setState(() {
-      databaseUtil.deleteUser(user);
+      databaseUtil.deleteAccount(account);
     });
   }
 }

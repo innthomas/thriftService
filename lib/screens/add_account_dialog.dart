@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-
-import 'package:myDataTable_app/model/user.dart';
+import 'package:thriftService/model/account_model.dart';
 
 class AddUserDialog {
-  final teName = TextEditingController();
-  final teEmail = TextEditingController();
-  final teAge = TextEditingController();
-  final teMobile = TextEditingController();
-  User user;
+  final acctNameController = TextEditingController();
+  final acctNumberController = TextEditingController();
+  final acctBalanceController = TextEditingController();
+  final acctMobileController = TextEditingController();
+  final acctDepositController = TextEditingController();
+  final acctWithrawalController = TextEditingController();
+  Account account;
 
   static const TextStyle linkStyle = const TextStyle(
     color: Colors.blue,
@@ -15,13 +16,15 @@ class AddUserDialog {
   );
 
   Widget buildAboutDialog(BuildContext context,
-      AddUserCallback _myHomePageState, bool isEdit, User user) {
-    if (user != null) {
-      this.user = user;
-      teName.text = user.name;
-      teEmail.text = user.email;
-      teAge.text = user.age;
-      teMobile.text = user.mobile;
+      AddAccountCallback _myHomePageState, bool isEdit, Account account) {
+    if (account != null) {
+      this.account = account;
+      acctNameController.text = account.acctName;
+      acctNumberController.text = account.acctNumber;
+      acctDepositController.text = account.acctDeposit;
+      acctMobileController.text = account.mobile;
+      acctBalanceController.text = account.acctBalance;
+      acctWithrawalController.text = account.acctWithrawal;
     }
 
     return new AlertDialog(
@@ -31,10 +34,12 @@ class AddUserDialog {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            getTextField("Name", teName),
-            getTextField("Email", teEmail),
-            getTextField("Age", teAge),
-            getTextField("Mobile", teMobile),
+            getTextField("acctName", acctNameController),
+            getTextField("acctNumber", acctNumberController),
+            getTextField("acctBalance", acctBalanceController),
+            getTextField("acctBalance", acctBalanceController),
+            getTextField("acctBalance", acctBalanceController),
+            getTextField("Mobile", acctMobileController),
             new GestureDetector(
               onTap: () => onTap(isEdit, _myHomePageState, context),
               child: new Container(
@@ -86,16 +91,24 @@ class AddUserDialog {
     return loginBtn;
   }
 
-  User getData(bool isEdit) {
-    return new User(isEdit ? user.id : "", teName.text, teEmail.text,
-        teAge.text, teMobile.text);
+  Account getData(bool isEdit) {
+    return new Account(
+      isEdit ? account.id : "",
+      acctNameController.text,
+      acctBalanceController.text,
+      acctNumberController.text,
+      acctDepositController.text,
+      acctWithrawalController.text,
+      acctMobileController.text,
+    );
   }
 
-  onTap(bool isEdit, AddUserCallback _myHomePageState, BuildContext context) {
+  onTap(
+      bool isEdit, AddAccountCallback _myHomePageState, BuildContext context) {
     if (isEdit) {
       _myHomePageState.update(getData(isEdit));
     } else {
-      _myHomePageState.addUser(getData(isEdit));
+      _myHomePageState.addAccount(getData(isEdit));
     }
 
     Navigator.of(context).pop();
@@ -103,8 +116,8 @@ class AddUserDialog {
 }
 
 //Call back of user dashboad
-abstract class AddUserCallback {
-  void addUser(User user);
+abstract class AddAccountCallback {
+  void addAccount(Account account);
 
-  void update(User user);
+  void update(Account account);
 }
